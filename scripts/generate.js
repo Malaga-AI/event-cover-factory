@@ -196,10 +196,13 @@ if (type === 'community') {
   const cardHTMLs = data.speakers.map(s => speakerCardHTML(s));
   const speakerCards = cardHTMLs.join('\n    <div class="divider"></div>\n    ');
 
+  const title = data.title || 'Malaga-AI Community Session';
+
   html = html
     .replace('{{BACKGROUND_IMAGE}}', toBase64(path.join(ROOT, 'sources/background_community_session.png')))
     .replace('{{MALAGA_LOGO}}', toBase64(path.join(ROOT, 'sources/logo_horizontal.png')))
     .replace('{{SPONSOR_LOGO}}', toBase64(path.join(ROOT, 'sources/grupo_billingham_sponsor.png')))
+    .replace('{{TITLE}}', title)
     .replace('{{DATE}}', data.date)
     .replace('{{HOUR}}', data.hour)
     .replace('{{VENUE}}', data.venue)
