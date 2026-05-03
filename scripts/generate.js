@@ -172,19 +172,60 @@ function speakerCardHTML(speaker) {
     </div>`;
 }
 
-const cardHTMLs = data.speakers.map(s => speakerCardHTML(s));
-const speakerCards = cardHTMLs.join('\n    <div class="divider"></div>\n    ');
+const VENUE_MAP = {
+  marlife: {
+    name: 'Marlife Business Hub - Larios',
+    logo: 'marlife_logo.png',
+    circular: true,
+  },
+  innovation_campus: {
+    name: 'Innovation Campus',
+    logo: 'innovation_campus_logo.png',
+    circular: false,
+  },
+};
 
 let html = fs.readFileSync(templatePath, 'utf8');
+const type = data.type || 'community';
 
-html = html
-  .replace('{{BACKGROUND_IMAGE}}', toBase64(path.join(ROOT, 'sources/background_community_session.png')))
-  .replace('{{MALAGA_LOGO}}', toBase64(path.join(ROOT, 'sources/logo_horizontal.png')))
-  .replace('{{SPONSOR_LOGO}}', toBase64(path.join(ROOT, 'sources/grupo_billingham_sponsor.png')))
-  .replace('{{DATE}}', data.date)
-  .replace('{{HOUR}}', data.hour)
-  .replace('{{VENUE}}', data.venue)
-  .replace('{{SPEAKER_CARDS}}', speakerCards);
+if (type === 'community') {
+  const cardHTMLs = data.speakers.map(s => speakerCardHTML(s));
+  const speakerCards = cardHTMLs.join('\n    <div class="divider"></div>\n    ');
+
+  html = html
+    .replace('{{BACKGROUND_IMAGE}}', toBase64(path.join(ROOT, 'sources/background_community_session.png')))
+    .replace('{{MALAGA_LOGO}}', toBase64(path.join(ROOT, 'sources/logo_horizontal.png')))
+    .replace('{{SPONSOR_LOGO}}', toBase64(path.join(ROOT, 'sources/grupo_billingham_sponsor.png')))
+    .replace('{{DATE}}', data.date)
+    .replace('{{HOUR}}', data.hour)
+    .replace('{{VENUE}}', data.venue)
+    .replace('{{SPEAKER_CARDS}}', speakerCards);
+} else if (type === 'networking') {
+  const venue = VENUE_MAP[data.venue];
+  if (!venue) throw new Error(`Unknown venue "${data.venue}". Known: ${Object.keys(VENUE_MAP).join(', ')}`);
+
+  const monthRaw = (data.month || '').trim();
+  const monthParts = monthRaw.split(/\s+/);
+  const monthTop = monthParts[0] || '';
+  const monthBottom = monthParts.slice(1).join(' ');
+
+  const tagline = data.tagline || 'Connect with AI enthusiasts and industry professionals in Málaga';
+
+  html = html
+    .replace('{{SIDE_PHOTO}}', toBase64(path.join(ROOT, 'sources/side_panel_networking_session.png')))
+    .replace('{{MALAGA_LOGO_VERTICAL}}', toBase64(path.join(ROOT, 'sources/logo_vertical.png')))
+    .replace('{{SPONSOR_LOGO}}', toBase64(path.join(ROOT, 'sources/grupo_billingham_sponsor.png')))
+    .replace('{{VENUE_LOGO}}', toBase64(path.join(ROOT, 'sources', venue.logo)))
+    .replace('{{VENUE_LOGO_CLASS}}', venue.circular ? 'circular' : '')
+    .replace('{{VENUE_NAME}}', venue.name)
+    .replace('{{MONTH_TOP}}', monthTop)
+    .replace('{{MONTH_BOTTOM}}', monthBottom)
+    .replace('{{TAGLINE}}', tagline)
+    .replace('{{DATE}}', data.date)
+    .replace('{{TIME}}', data.time);
+} else {
+  throw new Error(`Unknown type "${type}"`);
+}
 
 const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'event-poster-'));
 const tmpHtml = path.join(tmpDir, 'poster.html');
