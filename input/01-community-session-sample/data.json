@@ -7,12 +7,14 @@
     {
       "name": "Lola Burgueño",
       "role": "Associate Professor at UMA",
-      "talk": "Low-code, AI and the new era of Software Development"
+      "talk": "Low-code, AI and the new era of Software Development",
+      "img": "lola.png"
     },
     {
       "name": "Olmo Gallegos",
       "role": "Senior Android Developer",
-      "talk": "Mobile Apps with AI using Claude Code"
+      "talk": "Mobile Apps with AI using Claude Code",
+      "img": "olmo.png"
     }
   ]
 }

@@ -45,10 +45,11 @@
   }
   .title-banner h1 {
     color: #090E2A;
-    font-size: 116px;
+    font-size: {{TITLE_FONT_SIZE}}px;
     font-weight: 900;
     letter-spacing: -2.5px;
     line-height: 1;
+    white-space: nowrap;
   }
 
   /* ─── LAYER 3 – Date banner (narrower, centred) ─── */
@@ -100,10 +101,10 @@
   /* ─── LAYER 5 – White speakers band ─── */
   .speakers {
     position: absolute;
-    top: 660px;
+    top: 600px;
     left: 0;
     width: 2160px;
-    height: 420px;
+    height: 480px;
     background: #ffffff;
     display: flex;
     align-items: center;
@@ -121,15 +122,15 @@
     flex: 1;
     display: flex;
     align-items: center;
-    gap: 40px;
-    padding: 0 80px;
+    gap: 50px;
+    padding: 0 70px;
   }
 
   .speaker-photo {
-    width: 270px;
-    height: 270px;
+    width: 360px;
+    height: 360px;
     border-radius: 50%;
-    border: 6px solid #18DAE3;
+    border: 8px solid #18DAE3;
     background: #f5f5f5;
     overflow: hidden;
     flex-shrink: 0;
@@ -145,33 +146,40 @@
 
   .speaker-info {
     flex: 1;
-    max-width: 600px;
+    max-width: 640px;
   }
   .talk-title {
-    font-size: 60px;
+    font-size: 64px;
     font-weight: 800;
     color: #090E2A;
     line-height: 1.1;
     margin-bottom: 28px;
   }
   .speaker-name {
-    font-size: 36px;
+    font-size: 42px;
     color: #090E2A;
     font-weight: 400;
     margin-bottom: 4px;
   }
   .speaker-role {
-    font-size: 30px;
+    font-size: 34px;
     color: #888;
     font-weight: 400;
   }
 
   .divider {
     width: 1px;
-    height: 270px;
+    height: 360px;
     background: #d8d8d8;
     flex-shrink: 0;
   }
+
+  /* Compact sizing for 3-up panel layouts */
+  .speakers-row-3 .speaker-card { padding: 0 40px; gap: 32px; }
+  .speakers-row-3 .speaker-photo { width: 290px; height: 290px; border-width: 6px; }
+  .speakers-row-3 .speaker-name { font-size: 54px; }
+  .speakers-row-3 .speaker-role { font-size: 42px; }
+  .speakers-row-3 .divider { height: 290px; }
 
 </style>
 </head>
@@ -195,7 +203,7 @@
 
   <!-- LAYER 5 -->
   <div class="speakers">
-    <div class="speakers-row">
+    <div class="speakers-row speakers-row-{{SPEAKER_COUNT}}">
       {{SPEAKER_CARDS}}
     </div>
   </div>

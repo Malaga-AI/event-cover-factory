@@ -142,9 +142,20 @@ function toBase64(filePath) {
   return `data:image/${mime};base64,${fs.readFileSync(filePath).toString('base64')}`;
 }
 
+// Shrink title font-size when the string is longer than the baseline that fits at 116px.
+// "Malaga-AI Community Session" (27 chars) renders comfortably at 116px in a 2160px banner,
+// so we scale linearly for longer strings, with a floor of 64px.
+function computeTitleFontSize(title) {
+  const BASE_SIZE = 116;
+  const BASE_LEN = 30;
+  const MIN_SIZE = 64;
+  if (title.length <= BASE_LEN) return BASE_SIZE;
+  return Math.max(MIN_SIZE, Math.floor(BASE_SIZE * BASE_LEN / title.length));
+}
+
 // Resolve speaker photo: tries <firstName>.png (case-insensitive) in input dir
 function resolvePhoto(speaker) {
-  if (speaker.photo) return path.join(inputDir, speaker.photo);
+  if (speaker.img) return path.join(inputDir, speaker.img);
   const firstName = speaker.name.split(/\s+/)[0].toLowerCase();
   const candidates = fs.readdirSync(inputDir).filter(f =>
     f.toLowerCase() === `${firstName}.png` ||
@@ -197,15 +208,18 @@ if (type === 'community') {
   const speakerCards = cardHTMLs.join('\n    <div class="divider"></div>\n    ');
 
   const title = data.title || 'Malaga-AI Community Session';
+  const titleFontSize = computeTitleFontSize(title);
 
   html = html
     .replace('{{BACKGROUND_IMAGE}}', toBase64(path.join(ROOT, 'sources/background_community_session.png')))
     .replace('{{MALAGA_LOGO}}', toBase64(path.join(ROOT, 'sources/logo_horizontal.png')))
     .replace('{{SPONSOR_LOGO}}', toBase64(path.join(ROOT, 'sources/grupo_billingham_sponsor.png')))
     .replace('{{TITLE}}', title)
+    .replace('{{TITLE_FONT_SIZE}}', titleFontSize)
     .replace('{{DATE}}', data.date)
     .replace('{{HOUR}}', data.hour)
     .replace('{{VENUE}}', data.venue)
+    .replace('{{SPEAKER_COUNT}}', data.speakers.length)
     .replace('{{SPEAKER_CARDS}}', speakerCards);
 } else if (type === 'networking') {
   const venue = VENUE_MAP[data.venue];
