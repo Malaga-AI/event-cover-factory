@@ -1,0 +1,18 @@
+{
+  "type": "community",
+  "date": "19 February 2026",
+  "hour": "18:00",
+  "venue": "GSEC - Málaga",
+  "speakers": [
+    {
+      "name": "Lola Burgueño",
+      "role": "Associate Professor at UMA",
+      "talk": "Low-code, AI and the new era of Software Development"
+    },
+    {
+      "name": "Olmo Gallegos",
+      "role": "Senior Android Developer",
+      "talk": "Mobile Apps with AI using Claude Code"
+    }
+  ]
+}

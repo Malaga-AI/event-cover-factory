@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600;1,700;1,800&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 2160px;
+    height: 1080px;
+    overflow: hidden;
+    position: relative;
+    background: #ffffff;
+    font-family: 'Barlow', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+  }
+
+  /* ─── LAYER 1 – Background photo (top) ─── */
+  .bg-photo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2160px;
+    height: 560px;
+    object-fit: cover;
+    object-position: center 30%;
+    filter: grayscale(100%) brightness(0.55);
+    z-index: 1;
+  }
+
+  /* ─── LAYER 2 – Cyan title banner (full-width) ─── */
+  .title-banner {
+    position: absolute;
+    top: 240px;
+    left: 0;
+    width: 2160px;
+    height: 170px;
+    background: #18DAE3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+  }
+  .title-banner h1 {
+    color: #090E2A;
+    font-size: 116px;
+    font-weight: 900;
+    letter-spacing: -2.5px;
+    line-height: 1;
+  }
+
+  /* ─── LAYER 3 – Date banner (narrower, centred) ─── */
+  .date-banner {
+    position: absolute;
+    top: 410px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1760px;
+    height: 150px;
+    background: #090E2A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+  }
+  .date-banner p {
+    color: #18DAE3;
+    font-size: 68px;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 1px;
+  }
+
+  /* ─── LAYER 4 – Malaga-AI horizontal logo (top-right) ─── */
+  .malaga-logo {
+    position: absolute;
+    top: 50px;
+    right: 56px;
+    height: 130px;
+    width: auto;
+    z-index: 4;
+  }
+
+  /* ─── LAYER 5 – White speakers band ─── */
+  .speakers {
+    position: absolute;
+    top: 560px;
+    left: 0;
+    width: 2160px;
+    height: 520px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  .speakers-row {
+    display: flex;
+    align-items: center;
+    width: 2160px;
+  }
+
+  .speaker-card {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding: 0 80px;
+  }
+
+  .speaker-photo {
+    width: 270px;
+    height: 270px;
+    border-radius: 50%;
+    border: 6px solid #18DAE3;
+    background: #f5f5f5;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .speaker-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .speaker-info {
+    flex: 1;
+    max-width: 600px;
+  }
+  .talk-title {
+    font-size: 60px;
+    font-weight: 800;
+    color: #090E2A;
+    line-height: 1.1;
+    margin-bottom: 28px;
+  }
+  .speaker-name {
+    font-size: 36px;
+    color: #090E2A;
+    font-weight: 400;
+    margin-bottom: 4px;
+  }
+  .speaker-role {
+    font-size: 30px;
+    color: #888;
+    font-weight: 400;
+  }
+
+  .divider {
+    width: 1px;
+    height: 270px;
+    background: #d8d8d8;
+    flex-shrink: 0;
+  }
+
+  /* ─── LAYER 6 – Sponsor (bottom-centre) ─── */
+  .sponsor {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+  }
+  .sponsor-logo {
+    height: 90px;
+    width: auto;
+    filter: invert(1);
+    opacity: 0.85;
+    display: block;
+  }
+</style>
+</head>
+<body>
+
+  <!-- LAYER 1 -->
+  <img class="bg-photo" src="{{BACKGROUND_IMAGE}}" alt="" />
+
+  <!-- LAYER 4 (top-right logo, above banners) -->
+  <img class="malaga-logo" src="{{MALAGA_LOGO}}" alt="Malaga-AI" />
+
+  <!-- LAYER 2 -->
+  <div class="title-banner">
+    <h1>Malaga-AI Community Session</h1>
+  </div>
+
+  <!-- LAYER 3 -->
+  <div class="date-banner">
+    <p>{{DATE}} | {{HOUR}}h | {{VENUE}}</p>
+  </div>
+
+  <!-- LAYER 5 -->
+  <div class="speakers">
+    <div class="speakers-row">
+      {{SPEAKER_CARDS}}
+    </div>
+  </div>
+
+  <!-- LAYER 6 -->
+  <div class="sponsor">
+    <img class="sponsor-logo" src="{{SPONSOR_LOGO}}" alt="Grupo Billingham" />
+  </div>
+
+</body>
+</html>
