@@ -73,23 +73,37 @@
     letter-spacing: 1px;
   }
 
-  /* ─── LAYER 4 – Malaga-AI horizontal logo (top-right) ─── */
+  /* ─── LAYER 4 – Malaga-AI horizontal logo (top-left) ─── */
   .malaga-logo {
     position: absolute;
     top: 50px;
-    right: 56px;
+    left: 56px;
     height: 130px;
     width: auto;
     z-index: 4;
   }
 
+  /* ─── LAYER 4b – Sponsor (top-right, white-on-transparent source) ─── */
+  .sponsor-top {
+    position: absolute;
+    top: 70px;
+    right: 56px;
+    z-index: 4;
+  }
+  .sponsor-top img {
+    height: 90px;
+    width: auto;
+    opacity: 0.95;
+    display: block;
+  }
+
   /* ─── LAYER 5 – White speakers band ─── */
   .speakers {
     position: absolute;
-    top: 560px;
+    top: 660px;
     left: 0;
     width: 2160px;
-    height: 520px;
+    height: 420px;
     background: #ffffff;
     display: flex;
     align-items: center;
@@ -159,21 +173,6 @@
     flex-shrink: 0;
   }
 
-  /* ─── LAYER 6 – Sponsor (bottom-centre) ─── */
-  .sponsor {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 4;
-  }
-  .sponsor-logo {
-    height: 90px;
-    width: auto;
-    filter: invert(1);
-    opacity: 0.85;
-    display: block;
-  }
 </style>
 </head>
 <body>
@@ -201,9 +200,9 @@
     </div>
   </div>
 
-  <!-- LAYER 6 -->
-  <div class="sponsor">
-    <img class="sponsor-logo" src="{{SPONSOR_LOGO}}" alt="Grupo Billingham" />
+  <!-- LAYER 4b -->
+  <div class="sponsor-top">
+    <img src="{{SPONSOR_LOGO}}" alt="Grupo Billingham" />
   </div>
 
 </body>

@@ -1,0 +1,24 @@
+{
+  "type": "community",
+  "title": "Expert Panel: Employment in the Age of AI",
+  "date": "20 May 2026",
+  "hour": "18:30",
+  "venue": "GSEC - Málaga",
+  "speakers": [
+    {
+      "name": "Francisco Sánchez",
+      "role": "Founder and CTO",
+      "img": "fran.png"
+    },
+    {
+      "name": "Dani Morillas",
+      "role": "Senior Software Engineer",
+      "img": "dani.png"
+    },
+    {
+      "name": "Katy Peichert",
+      "role": "Talent Lead",
+      "img": "katy.png"
+    }
+  ]
+}
