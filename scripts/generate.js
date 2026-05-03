@@ -172,6 +172,23 @@ function speakerCardHTML(speaker) {
     </div>`;
 }
 
+// Build panelist card HTML (no talk title)
+function panelistCardHTML(panelist) {
+  const photoPath = resolvePhoto(panelist);
+  const photoSrc = photoPath ? toBase64(photoPath) : '';
+  const photoTag = photoSrc
+    ? `<img src="${photoSrc}" alt="${panelist.name}" />`
+    : `<div style="width:100%;height:100%;background:#ddd;"></div>`;
+
+  return `<div class="speaker-card">
+      <div class="speaker-photo">${photoTag}</div>
+      <div class="speaker-info">
+        <div class="speaker-name">${panelist.name}</div>
+        <div class="speaker-role">${panelist.role}</div>
+      </div>
+    </div>`;
+}
+
 const VENUE_MAP = {
   marlife: {
     name: 'Marlife Business Hub - Larios',
@@ -223,6 +240,24 @@ if (type === 'community') {
     .replace('{{TAGLINE}}', tagline)
     .replace('{{DATE}}', data.date)
     .replace('{{TIME}}', data.time);
+} else if (type === 'panel') {
+  const panelists = data.panelists || data.speakers || [];
+  if (!panelists.length) throw new Error('Panel data must include "panelists" (or "speakers") array.');
+
+  const cardHTMLs = panelists.map(p => panelistCardHTML(p));
+  const speakerCards = cardHTMLs.join('\n      <div class="divider"></div>\n      ');
+  const rowClass = panelists.length === 3 ? 'panelists-3' : '';
+
+  html = html
+    .replace('{{BACKGROUND_IMAGE}}', toBase64(path.join(ROOT, 'sources/background_community_session.png')))
+    .replace('{{MALAGA_LOGO}}', toBase64(path.join(ROOT, 'sources/logo_horizontal.png')))
+    .replace('{{SPONSOR_LOGO}}', toBase64(path.join(ROOT, 'sources/grupo_billingham_sponsor.png')))
+    .replace('{{TITLE}}', data.title)
+    .replace('{{DATE}}', data.date)
+    .replace('{{HOUR}}', data.hour)
+    .replace('{{VENUE}}', data.venue)
+    .replace('{{ROW_CLASS}}', rowClass)
+    .replace('{{SPEAKER_CARDS}}', speakerCards);
 } else {
   throw new Error(`Unknown type "${type}"`);
 }
