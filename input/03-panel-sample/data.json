@@ -1,21 +1,21 @@
 {
   "type": "panel",
-  "title": "AI in Production: Lessons from the Trenches",
-  "date": "26 March 2026",
+  "title": "Employment in the Age of AI",
+  "date": "20 May 2026",
   "hour": "18:30",
   "venue": "GSEC - Málaga",
   "panelists": [
     {
-      "name": "Dani Ruiz",
-      "role": "Staff ML Engineer"
+      "name": "Francisco Sánchez",
+      "role": "Founder and CTO"
     },
     {
-      "name": "Fran López",
-      "role": "AI Product Lead"
+      "name": "Dani Morillas",
+      "role": "Senior Software Engineer"
     },
     {
-      "name": "Katy Martín",
-      "role": "Head of Data Science"
+      "name": "Katy Peichert",
+      "role": "Talent Lead"
     }
   ]
 }
