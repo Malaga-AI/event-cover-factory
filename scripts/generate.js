@@ -197,6 +197,7 @@ const VENUE_MAP = {
     name: 'Innovation Campus',
     logo: 'innovation_campus_logo.png',
     circular: false,
+    white: true,
   },
 };
 
@@ -237,7 +238,7 @@ if (type === 'community') {
     .replace('{{MALAGA_LOGO_VERTICAL}}', toBase64(path.join(ROOT, 'sources/logo_vertical.png')))
     .replace('{{SPONSOR_LOGO}}', toBase64(path.join(ROOT, 'sources/grupo_billingham_sponsor.png')))
     .replace('{{VENUE_LOGO}}', toBase64(path.join(ROOT, 'sources', venue.logo)))
-    .replace('{{VENUE_LOGO_CLASS}}', venue.circular ? 'circular' : '')
+    .replace('{{VENUE_LOGO_CLASS}}', [venue.circular && 'circular', venue.white && 'white-logo'].filter(Boolean).join(' '))
     .replace('{{VENUE_NAME}}', venue.name)
     .replace('{{MONTH_TOP}}', monthTop)
     .replace('{{MONTH_BOTTOM}}', monthBottom)
