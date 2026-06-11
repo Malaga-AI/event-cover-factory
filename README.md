@@ -22,7 +22,8 @@ Examples:
 ```bash
 node scripts/generate.js input/01-community-session-sample
 node scripts/generate.js input/02-networking-night-sample
-node scripts/generate.js input/03-panel-sample
+node scripts/generate.js input/03-panel-may-2026
+node scripts/generate.js input/06-project-showcase-OSC
 ```
 
 Each run also writes a `<name>-debug.html` next to the PNG so you can open the rendered HTML in a browser to inspect layout.
@@ -30,62 +31,26 @@ Each run also writes a `<name>-debug.html` next to the PNG so you can open the r
 ## How it works
 
 1. Reads `data.json` from the input directory.
-2. Picks `template/<type>-session.html` based on `data.type` (`community` or `networking`).
+2. Picks `template/<type>-session.html` based on `data.type` (`community`, `networking`, or `showcase`).
 3. Inlines all images as base64 (backgrounds, logos from `sources/`, and speaker photos from the input dir) and substitutes `{{PLACEHOLDERS}}` in the template.
 4. Renders the HTML with headless Chrome at 2160×1500 and crops to 2160×1080.
 
-## Template types
+## Event kinds
 
-### `community` → `template/community-session.html`
+Each kind is driven by a `data.json` (selected by its `type` field) and its template in `template/`. See the linked sample input for the exact fields:
 
-Used for both regular community sessions (with talk titles) and panels (no talk titles). The `talk` field is optional per speaker — omit it and only the name + role render.
+- **Community Session** — `community` → [`input/01-community-session-sample/data.json`](input/01-community-session-sample/data.json)
+- **Networking Night** — `networking` → [`input/02-networking-night-sample/data.json`](input/02-networking-night-sample/data.json)
+- **Expert Panel** — `community` with speakers that omit the `talk` field → [`input/03-panel-may-2026/data.json`](input/03-panel-may-2026/data.json)
+- **Project Showcase** — `showcase` → [`input/06-project-showcase-OSC/data.json`](input/06-project-showcase-OSC/data.json)
 
-```json
-{
-  "type": "community",
-  "date": "19 February 2026",
-  "hour": "18:00",
-  "venue": "GSEC - Málaga",
-  "speakers": [
-    { "name": "Lola Burgueño", "role": "Associate Professor at UMA", "talk": "Low-code, AI and the new era of Software Development" },
-    { "name": "Olmo Gallegos", "role": "Senior Android Developer",   "talk": "Mobile Apps with AI using Claude Code" }
-  ]
-}
-```
-
-Panel example (no `talk` fields → titles are omitted, otherwise identical):
-
-```json
-{
-  "type": "community",
-  "date": "26 March 2026",
-  "hour": "18:30",
-  "venue": "GSEC - Málaga",
-  "speakers": [
-    { "name": "Dani Ruiz",   "role": "Staff ML Engineer" },
-    { "name": "Fran López",  "role": "AI Product Lead" },
-    { "name": "Katy Martín", "role": "Head of Data Science" }
-  ]
-}
-```
-
-### `networking` → `template/networking-session.html`
-
-```json
-{
-  "type": "networking",
-  "month": "JAN 2026",
-  "venue": "marlife",
-  "date": "29 January 2026",
-  "time": "18:30h - 20:30h"
-}
-```
-
-`venue` must be a key in the `VENUE_MAP` defined in `scripts/generate.js` (currently `marlife`, `innovation_campus`). Add new venues there with their logo file (in `sources/`) and whether the logo should be rendered as a circle.
+For `networking`, `venue` must be a key in the `VENUE_MAP` in `scripts/generate.js` (currently `marlife`, `innovation_campus`).
 
 ## Speaker photos
 
 For `community` covers (including panel use), drop a photo named `<firstname>.png` (or `.jpg`) into the input directory — e.g. `lola.png` for `Lola Burgueño`. Matching is case-insensitive on the first whitespace-separated token of `name`. You can also set `"photo": "custom-file.png"` in a speaker entry to override.
+
+**Style-guide requirement:** speaker photos must be transparent-background PNG cutouts (subject cut out from its background). This cutout is prepared externally before the file is added to the input folder — the generator does not remove backgrounds.
 
 If no photo is found, a grey placeholder is rendered.
 
