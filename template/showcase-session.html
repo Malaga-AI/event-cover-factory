@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,600;0,700;0,800;0,900;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 2160px;
+    height: 1080px;
+    overflow: hidden;
+    position: relative;
+    background: #ffffff;
+    font-family: 'Barlow', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+  }
+
+  /* ─── LAYER 1 – Background photo (top) ─── */
+  .bg-photo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2160px;
+    height: 560px;
+    object-fit: cover;
+    object-position: center 45%;
+    filter: grayscale(100%) brightness(0.5) contrast(1.05);
+    z-index: 1;
+  }
+
+  /* ─── LAYER 2 – Cyan title banner (full-width) ─── */
+  .title-banner {
+    position: absolute;
+    top: 240px;
+    left: 0;
+    width: 2160px;
+    height: 170px;
+    background: #18DAE3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+  }
+  .title-banner h1 {
+    color: #090E2A;
+    font-size: 116px;
+    font-weight: 900;
+    letter-spacing: -2.5px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  /* ─── LAYER 3 – Date banner (narrower, centred) ─── */
+  .date-banner {
+    position: absolute;
+    top: 410px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1760px;
+    height: 150px;
+    background: #090E2A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+  }
+  .date-banner p {
+    color: #18DAE3;
+    font-size: 68px;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 1px;
+  }
+
+  /* ─── LAYER 4 – Malaga-AI horizontal logo (top-left) ─── */
+  .malaga-logo {
+    position: absolute;
+    top: 50px;
+    left: 56px;
+    height: 130px;
+    width: auto;
+    z-index: 4;
+  }
+
+  /* ─── LAYER 4b – Sponsor (top-right, white-on-transparent source) ─── */
+  .sponsor-top {
+    position: absolute;
+    top: 70px;
+    right: 56px;
+    z-index: 4;
+  }
+  .sponsor-top img {
+    height: 90px;
+    width: auto;
+    opacity: 0.95;
+    display: block;
+  }
+
+  /* ─── LAYER 5 – White project band ─── */
+  .project {
+    position: absolute;
+    top: 600px;
+    left: 0;
+    width: 2160px;
+    height: 480px;
+    background: #ffffff;
+    z-index: 2;
+  }
+
+  .project-text {
+    position: absolute;
+    top: 50%;
+    left: 120px;
+    transform: translateY(-50%);
+  }
+  .project-title {
+    font-size: {{TITLE_FONT_SIZE}}px;
+    font-weight: 900;
+    color: #090E2A;
+    line-height: 1.02;
+    letter-spacing: -2px;
+    white-space: nowrap;
+  }
+  .project-subtitle {
+    margin-top: 30px;
+    font-size: 50px;
+    font-weight: 500;
+    font-style: italic;
+    color: #555;
+    line-height: 1.2;
+    max-width: 1150px;
+  }
+
+  /* ─── LAYER 6 – Slanted sticker (lower-right, vertically centred) ─── */
+  .sticker {
+    position: absolute;
+    top: 840px;            /* centre of the 600–1080 band */
+    right: 96px;
+    transform: translateY(-50%) rotate(-8deg);
+    z-index: 5;
+    background: #090E2A;
+    border: 10px solid #ffffff;   /* die-cut white edge */
+    border-radius: 34px;
+    padding: 40px 46px 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    box-shadow: 0 24px 54px rgba(9, 14, 42, 0.40);
+    width: 460px;
+  }
+  /* outer cyan glow ring to lift it off the white band */
+  .sticker::before {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border-radius: 42px;
+    box-shadow: 0 0 0 6px #18DAE3;
+    pointer-events: none;
+  }
+  .sticker .badge {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 22px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .sticker img {
+    height: 138px;
+    width: auto;
+    display: block;
+  }
+  .sticker .sticker-text {
+    font-size: 40px;
+    font-weight: 800;
+    color: #18DAE3;
+    text-align: center;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+  }
+
+</style>
+</head>
+<body>
+
+  <!-- LAYER 1 -->
+  <img class="bg-photo" src="{{BACKGROUND_IMAGE}}" alt="" />
+
+  <!-- LAYER 4 -->
+  <img class="malaga-logo" src="{{MALAGA_LOGO}}" alt="Malaga-AI" />
+
+  <!-- LAYER 2 -->
+  <div class="title-banner">
+    <h1>AI Project Showcase</h1>
+  </div>
+
+  <!-- LAYER 3 -->
+  <div class="date-banner">
+    <p>{{DATE}} | {{HOUR}}h | {{VENUE}}</p>
+  </div>
+
+  <!-- LAYER 5 -->
+  <div class="project">
+    <div class="project-text">
+      <div class="project-title">{{TITLE}}</div>
+      <div class="project-subtitle">{{SUBTITLE}}</div>
+    </div>
+  </div>
+
+  <!-- LAYER 4b -->
+  <div class="sponsor-top">
+    <img src="{{SPONSOR_LOGO}}" alt="Grupo Billingham" />
+  </div>
+
+  <!-- LAYER 6 -->
+  <div class="sticker">
+    <div class="badge"><img src="{{EXTRA_IMAGE}}" alt="{{EXTRA_TEXT}}" /></div>
+    <div class="sticker-text">{{EXTRA_TEXT}}</div>
+  </div>
+
+</body>
+</html>

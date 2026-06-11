@@ -222,6 +222,34 @@ if (type === 'community') {
     .replace('{{VENUE}}', data.venue)
     .replace('{{SPEAKER_COUNT}}', data.speakers.length)
     .replace('{{SPEAKER_CARDS}}', speakerCards);
+} else if (type === 'showcase') {
+  // Title renders on a single line; size it to fit the ~1450px column to the
+  // left of the sticker. AVG_CHAR approximates a Barlow-900 glyph width as a
+  // fraction of the font size, capped between MIN and MAX.
+  const title = data.title || '';
+  const TITLE_MAX = 96;
+  const TITLE_MIN = 52;
+  const COL_WIDTH = 1450;
+  const AVG_CHAR = 0.46;
+  const fit = Math.floor(COL_WIDTH / Math.max(1, title.length * AVG_CHAR));
+  const titleFontSize = Math.max(TITLE_MIN, Math.min(TITLE_MAX, fit));
+
+  const extra = data.extra || {};
+  const extraImage = extra.img ? toBase64(path.join(inputDir, extra.img)) : '';
+  const extraText = extra.text || '';
+
+  html = html
+    .replace('{{BACKGROUND_IMAGE}}', toBase64(path.join(ROOT, 'sources/project_background.jpg')))
+    .replace('{{MALAGA_LOGO}}', toBase64(path.join(ROOT, 'sources/logo_horizontal.png')))
+    .replace('{{SPONSOR_LOGO}}', toBase64(path.join(ROOT, 'sources/grupo_billingham_sponsor.png')))
+    .replace('{{TITLE_FONT_SIZE}}', titleFontSize)
+    .replace('{{TITLE}}', title)
+    .replace('{{SUBTITLE}}', data.subtitle || '')
+    .replace('{{DATE}}', data.date)
+    .replace('{{HOUR}}', data.hour)
+    .replace('{{VENUE}}', data.venue)
+    .replace(/\{\{EXTRA_IMAGE\}\}/g, extraImage)
+    .replace(/\{\{EXTRA_TEXT\}\}/g, extraText);
 } else if (type === 'networking') {
   const venue = VENUE_MAP[data.venue];
   if (!venue) throw new Error(`Unknown venue "${data.venue}". Known: ${Object.keys(VENUE_MAP).join(', ')}`);

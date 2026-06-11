@@ -1,0 +1,12 @@
+{
+  "type": "showcase",
+  "date": "26 June 2026",
+  "hour": "18:30",
+  "venue": "OpenSouthCode",
+  "title": "Career Advice in the Age of AI",
+  "subtitle": "A free app to get personalized guidance to stay ahead in AI",
+  "extra": {
+    "img": "opensouthcode_logo.png",
+    "text": "Malaga-AI @ OpenSouthCode"
+  }
+}
