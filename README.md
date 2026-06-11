@@ -1,6 +1,6 @@
 # Event Cover Factory
 
-Generate 2160×1080 PNG covers for Málaga AI events from a JSON spec and an HTML template.
+Generate publish-ready covers for Málaga AI events from a JSON spec and an HTML template.
 
 ## Requirements
 
