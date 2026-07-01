@@ -254,9 +254,16 @@ if (type === 'community') {
   const venue = VENUE_MAP[data.venue];
   if (!venue) throw new Error(`Unknown venue "${data.venue}". Known: ${Object.keys(VENUE_MAP).join(', ')}`);
 
+  const MONTH_ABBR = {
+    January: 'Jan', February: 'Feb', March: 'Mar', April: 'Apr',
+    May: 'May', June: 'June', July: 'July', August: 'Aug',
+    September: 'Sept', October: 'Oct', November: 'Nov', December: 'Dec',
+  };
+
   const monthRaw = (data.month || '').trim();
   const monthParts = monthRaw.split(/\s+/);
-  const monthTop = monthParts[0] || '';
+  const monthName = monthParts[0] || '';
+  const monthTop = monthName.length > 4 ? (MONTH_ABBR[monthName] || monthName) : monthName;
   const monthBottom = monthParts.slice(1).join(' ');
 
   const tagline = data.tagline || 'Connect with AI enthusiasts and industry professionals in Málaga';
