@@ -161,6 +161,30 @@ function resolveExtraImage(img) {
   return path.join(ROOT, 'sources', img);
 }
 
+// Intrinsic width/height ratio of an image, used to decide whether the extra
+// logo fits the sticker card or needs the full-width footer instead.
+// Returns null when the ratio can't be determined (e.g. JPEG) — callers should
+// treat that as "fits the card".
+function getImageAspectRatio(filePath) {
+  const ext = path.extname(filePath).slice(1).toLowerCase();
+  if (ext === 'svg') {
+    const svg = fs.readFileSync(filePath, 'utf8');
+    const viewBox = svg.match(/viewBox=["']\s*[\d.-]+\s+[\d.-]+\s+([\d.]+)\s+([\d.]+)\s*["']/);
+    if (viewBox) return parseFloat(viewBox[1]) / parseFloat(viewBox[2]);
+    const w = svg.match(/\bwidth=["']([\d.]+)/);
+    const h = svg.match(/\bheight=["']([\d.]+)/);
+    if (w && h) return parseFloat(w[1]) / parseFloat(h[1]);
+    return null;
+  }
+  if (ext === 'png') {
+    const buf = fs.readFileSync(filePath);
+    const width = buf.readUInt32BE(16);
+    const height = buf.readUInt32BE(20);
+    return width / height;
+  }
+  return null;
+}
+
 // Resolve speaker photo: tries <firstName>.png (case-insensitive) in input dir
 function resolvePhoto(speaker) {
   if (speaker.img) return path.join(inputDir, speaker.img);
@@ -231,25 +255,38 @@ if (type === 'community') {
     .replace('{{SPEAKER_COUNT}}', data.speakers.length)
     .replace('{{SPEAKER_CARDS}}', speakerCards);
 } else if (type === 'showcase') {
-  // Title renders on a single line; size it to fit the ~1450px column to the
-  // left of the sticker. AVG_CHAR approximates a Barlow-900 glyph width as a
+  const extra = data.extra || {};
+  const extraImagePath = extra.img ? resolveExtraImage(extra.img) : null;
+  const extraImage = extraImagePath ? toBase64(extraImagePath) : '';
+  const extraText = extra.text || '';
+
+  // The sticker card is built for roughly square-ish/moderately-wide logos.
+  // A wordmark-style logo (very wide relative to its height) reads as an
+  // illegible sliver once contained to the card, so it moves to a full-width
+  // footer instead. CARD_MAX_ASPECT is chosen so the logo keeps at least
+  // ~70px of height inside the card's 288px-wide badge (288 / 70 ≈ 4.1).
+  const CARD_MAX_ASPECT = 4.1;
+  const aspect = extraImagePath ? getImageAspectRatio(extraImagePath) : null;
+  const useFooterLayout = aspect !== null && aspect > CARD_MAX_ASPECT;
+  const extraLayoutClass = useFooterLayout ? 'footer-logo' : '';
+
+  // Title renders on a single line; size it to fit the column to the left of
+  // the sticker (or the full band width in footer mode, since nothing sits
+  // on the right there). AVG_CHAR approximates a Barlow-900 glyph width as a
   // fraction of the font size, capped between MIN and MAX.
   const title = data.title || '';
   const TITLE_MAX = 96;
   const TITLE_MIN = 52;
-  const COL_WIDTH = 1450;
+  const COL_WIDTH = useFooterLayout ? 1900 : 1450;
   const AVG_CHAR = 0.46;
   const fit = Math.floor(COL_WIDTH / Math.max(1, title.length * AVG_CHAR));
   const titleFontSize = Math.max(TITLE_MIN, Math.min(TITLE_MAX, fit));
-
-  const extra = data.extra || {};
-  const extraImage = extra.img ? toBase64(resolveExtraImage(extra.img)) : '';
-  const extraText = extra.text || '';
 
   html = html
     .replace('{{BACKGROUND_IMAGE}}', toBase64(path.join(ROOT, 'sources/project_background.jpg')))
     .replace('{{MALAGA_LOGO}}', toBase64(path.join(ROOT, 'sources/logo_horizontal.png')))
     .replace('{{SPONSOR_LOGO}}', toBase64(path.join(ROOT, 'sources/grupo_billingham_sponsor.png')))
+    .replace('{{EXTRA_LAYOUT_CLASS}}', extraLayoutClass)
     .replace('{{TITLE_FONT_SIZE}}', titleFontSize)
     .replace('{{TITLE}}', title)
     .replace('{{SUBTITLE}}', data.subtitle || '')
