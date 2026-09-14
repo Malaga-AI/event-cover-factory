@@ -172,8 +172,10 @@
               justify-content: center;
             }
             .sticker img {
-              height: 138px;
+              max-height: 138px;
+              max-width: 288px;   /* inner width of .badge; keeps wide/horizontal logos contained */
               width: auto;
+              height: auto;
               display: block;
             }
             .sticker .sticker-text {

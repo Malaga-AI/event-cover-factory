@@ -138,7 +138,7 @@ fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
 function toBase64(filePath) {
   const ext = path.extname(filePath).slice(1).toLowerCase();
-  const mime = ext === 'jpg' || ext === 'jpeg' ? 'jpeg' : ext;
+  const mime = ext === 'jpg' || ext === 'jpeg' ? 'jpeg' : ext === 'svg' ? 'svg+xml' : ext;
   return `data:image/${mime};base64,${fs.readFileSync(filePath).toString('base64')}`;
 }
 
@@ -151,6 +151,14 @@ function computeTitleFontSize(title) {
   const MIN_SIZE = 64;
   if (title.length <= BASE_LEN) return BASE_SIZE;
   return Math.max(MIN_SIZE, Math.floor(BASE_SIZE * BASE_LEN / title.length));
+}
+
+// Resolve extra/badge logo: prefer a copy in the input dir, else fall back to
+// a shared partner logo in sources/ (e.g. a recurring venue like 42 Málaga).
+function resolveExtraImage(img) {
+  const local = path.join(inputDir, img);
+  if (fs.existsSync(local)) return local;
+  return path.join(ROOT, 'sources', img);
 }
 
 // Resolve speaker photo: tries <firstName>.png (case-insensitive) in input dir
@@ -235,7 +243,7 @@ if (type === 'community') {
   const titleFontSize = Math.max(TITLE_MIN, Math.min(TITLE_MAX, fit));
 
   const extra = data.extra || {};
-  const extraImage = extra.img ? toBase64(path.join(inputDir, extra.img)) : '';
+  const extraImage = extra.img ? toBase64(resolveExtraImage(extra.img)) : '';
   const extraText = extra.text || '';
 
   html = html
