@@ -1,0 +1,21 @@
+{
+  "type": "community",
+  "title": "",
+  "date": "29 October 2026",
+  "hour": "18:30",
+  "venue": "GSEC - Málaga",
+  "speakers": [
+    {
+      "name": "Alexis Sánchez",
+      "role": "Head of Engineering",
+      "talk": "AI for Haters: A Developer’s Survival Guide",
+      "img": "alexis.png"
+    },
+    {
+      "name": "Manuel Villarejo",
+      "role": "Chief Information Officer",
+      "talk": "Diverge, Converge, Delegate: Choosing the Work I Should Do",
+      "img": "manuel.jpg"
+    }
+  ]
+}
