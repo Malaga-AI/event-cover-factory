@@ -213,5 +213,29 @@
     <img src="{{SPONSOR_LOGO}}" alt="Grupo Billingham" />
   </div>
 
+  <script>
+    // Shrink talk titles until every one fits in MAX_LINES, then apply that
+    // single size to all cards so the speakers stay visually consistent.
+    function fitTalkTitles() {
+      const MAX_LINES = 4;
+      const MIN_SIZE = 36;
+      const titles = Array.from(document.querySelectorAll('.talk-title'));
+      if (!titles.length) return;
+      titles.forEach(t => t.style.fontSize = '');
+      let size = parseFloat(getComputedStyle(titles[0]).fontSize);
+      const fits = () => titles.every(t => {
+        const lineHeight = parseFloat(getComputedStyle(t).lineHeight);
+        return Math.round(t.scrollHeight / lineHeight) <= MAX_LINES;
+      });
+      for (;;) {
+        titles.forEach(t => t.style.fontSize = size + 'px');
+        if (fits() || size <= MIN_SIZE) break;
+        size -= 2;
+      }
+    }
+    fitTalkTitles();
+    document.fonts.ready.then(fitTalkTitles);
+  </script>
+
 </body>
 </html>
