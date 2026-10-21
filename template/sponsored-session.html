@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,500;1,600;1,700;1,800&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+
+            body {
+              width: 2160px;
+              height: 1080px;
+              overflow: hidden;
+              position: relative;
+              background: #090E2A;
+              font-family: 'Barlow', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+            }
+
+            /* ─── LAYER 1 – Background glow behind the speaker ─── */
+            .glow {
+              position: absolute;
+              inset: 0;
+              background:
+                radial-gradient(circle at 1780px 560px, rgba(24, 218, 227, 0.28) 0, rgba(24, 218, 227, 0) 520px),
+                radial-gradient(circle at 200px 1000px, rgba(24, 218, 227, 0.10) 0, rgba(24, 218, 227, 0) 600px);
+              z-index: 1;
+            }
+
+            /* ─── LAYER 2 – Header: Malaga-AI logo | cyan band | sponsor logo ─── */
+            .header {
+              position: absolute;
+              top: 44px;
+              left: 56px;
+              right: 56px;
+              height: 130px;
+              display: flex;
+              align-items: center;
+              gap: 44px;
+              z-index: 4;
+            }
+            .header .malaga-logo {
+              height: 130px;
+              width: auto;
+              display: block;
+            }
+            .header .band {
+              flex: 1;
+              height: 104px;
+              background: #18DAE3;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+            .header .band span {
+              color: #090E2A;
+              font-size: 70px;
+              font-weight: 900;
+              letter-spacing: 6px;
+              text-transform: uppercase;
+              white-space: nowrap;
+            }
+            .header .sponsor-logo {
+              max-height: 104px;
+              max-width: 520px;
+              width: auto;
+              height: auto;
+              display: block;
+              border-radius: 10px;
+            }
+
+            /* ─── LAYER 3 – Talk title + description (left column) ─── */
+            .talk {
+              position: absolute;
+              top: 236px;
+              left: 96px;
+              width: 1330px;
+              z-index: 3;
+            }
+            .talk-title {
+              font-size: {{TITLE_FONT_SIZE}}px;
+              font-weight: 900;
+              color: #ffffff;
+              line-height: 1.04;
+              letter-spacing: -2px;
+            }
+            .talk-title::after {
+              content: '';
+              display: block;
+              width: 180px;
+              height: 10px;
+              margin-top: 28px;
+              background: #18DAE3;
+            }
+            .talk-description {
+              margin-top: 30px;
+              width: 1000px;
+              font-size: 38px;
+              font-weight: 500;
+              color: #C9D1E6;
+              line-height: 1.32;
+            }
+
+            /* ─── LAYER 4 – Speaker photo + name (right column) ─── */
+            .speaker {
+              position: absolute;
+              top: 200px;
+              right: 80px;
+              width: 640px;
+              height: 660px;
+              z-index: 3;
+            }
+            .speaker .ring {
+              position: absolute;
+              top: 30px;
+              left: 50%;
+              transform: translateX(-50%);
+              width: 480px;
+              height: 480px;
+              border-radius: 50%;
+              border: 10px solid #18DAE3;
+              background: rgba(24, 218, 227, 0.10);
+            }
+            .speaker .photo {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 640px;
+              height: 520px;
+              display: flex;
+              align-items: flex-end;
+              justify-content: center;
+              overflow: hidden;
+            }
+            .speaker .photo img {
+              height: 520px;
+              width: auto;
+              display: block;
+            }
+            .speaker-info {
+              position: absolute;
+              top: 534px;
+              left: 0;
+              width: 640px;
+              text-align: center;
+            }
+            .speaker-name {
+              font-size: 62px;
+              font-weight: 800;
+              color: #ffffff;
+              line-height: 1.05;
+              letter-spacing: -0.5px;
+            }
+            .speaker-role {
+              margin-top: 8px;
+              font-size: 36px;
+              font-weight: 500;
+              color: #18DAE3;
+              line-height: 1.15;
+            }
+
+            /* ─── LAYER 5 – Bottom band: venue logo | date & time / venue ─── */
+            .bottom-band {
+              position: absolute;
+              left: 0;
+              bottom: 0;
+              width: 2160px;
+              height: 190px;
+              background: #18DAE3;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 44px;
+              z-index: 4;
+            }
+            .bottom-band .venue-logo {
+              max-height: 150px;
+              max-width: 220px;
+              width: auto;
+              height: auto;
+              display: block;
+              filter: brightness(0);   /* render the venue logo in solid dark on cyan */
+            }
+            .bottom-band .divider {
+              width: 5px;
+              height: 130px;
+              background: #090E2A;
+            }
+            .bottom-band .when-where {
+              color: #090E2A;
+              font-style: italic;
+              white-space: nowrap;
+              line-height: 1.12;
+            }
+            .bottom-band .when {
+              font-size: 60px;
+              font-weight: 800;
+              letter-spacing: 0.5px;
+            }
+            .bottom-band .where {
+              font-size: 46px;
+              font-weight: 700;
+            }
+
+            /* ─── LAYER 6 – Slanted sticker (between description and speaker) ─── */
+            .sticker {
+              position: absolute;
+              top: 640px;
+              left: 1120px;
+              transform: rotate(-7deg);
+              z-index: 5;
+              background: #ffffff;
+              border: 8px solid #18DAE3;
+              border-radius: 30px;
+              padding: 22px 36px 24px;
+              box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+              text-align: center;
+            }
+            .sticker .sticker-text {
+              font-size: 46px;
+              font-weight: 900;
+              color: #090E2A;
+              line-height: 1.02;
+              letter-spacing: -0.5px;
+              white-space: pre-line;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- LAYER 1 -->
+        <div class="glow"></div>
+
+        <!-- LAYER 2 -->
+        <div class="header">
+            <img class="malaga-logo" src="{{MALAGA_LOGO}}" alt="Malaga-AI" />
+            <div class="band"><span>{{BAND_TEXT}}</span></div>
+            <img class="sponsor-logo" src="{{SPONSOR_LOGO}}" alt="{{SPONSOR_NAME}}" />
+        </div>
+
+        <!-- LAYER 3 -->
+        <div class="talk">
+            <div class="talk-title">{{TITLE}}</div>
+            <div class="talk-description">{{DESCRIPTION}}</div>
+        </div>
+
+        <!-- LAYER 4 -->
+        <div class="speaker">
+            <div class="ring"></div>
+            <div class="photo">{{SPEAKER_PHOTO}}</div>
+            <div class="speaker-info">
+                <div class="speaker-name">{{SPEAKER_NAME}}</div>
+                <div class="speaker-role">{{SPEAKER_ROLE}}</div>
+            </div>
+        </div>
+
+        <!-- LAYER 5 -->
+        <div class="bottom-band">
+            <img class="venue-logo" src="{{VENUE_LOGO}}" alt="{{VENUE_NAME}}" />
+            <div class="divider"></div>
+            <div class="when-where">
+                <div class="when">{{DATE}} | {{HOUR}}</div>
+                <div class="where">{{VENUE_NAME}} · {{VENUE_ADDRESS}}</div>
+            </div>
+        </div>
+
+        <!-- LAYER 6 -->
+        <div class="sticker">
+            <div class="sticker-text">{{STICKER_TEXT}}</div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "type": "sponsored",
+  "title": "Build AI Agents by Convention with BxAgents",
+  "description": "Discover BxAgents, a framework for building AI agents by convention instead of complex configuration. Go from a simple folder structure (instructions, tools, skills, subagents and integrations) to a deployable app. A hands-on session for developers.",
+  "date": "Thursday, 26 November 2026",
+  "hour": "19:00 - 21:00h",
+  "venue": "innovation_campus",
+  "sponsor": {
+    "name": "Ortus Solutions",
+    "logo": "ortus.png"
+  },
+  "speaker": {
+    "name": "Luis Majano",
+    "role": "Founder & CEO, Ortus Solutions",
+    "img": "luis.png"
+  },
+  "sticker": "Pizza & Drinks\nincluded"
+}

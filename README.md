@@ -24,6 +24,7 @@ node scripts/generate.js input/01-community-session-sample
 node scripts/generate.js input/02-networking-night-sample
 node scripts/generate.js input/03-panel-may-2026
 node scripts/generate.js input/06-project-showcase-OSC
+node scripts/generate.js input/15-sponsored-session-ortus
 ```
 
 Each run also writes a `<name>-debug.html` next to the PNG so you can open the rendered HTML in a browser to inspect layout.
@@ -31,7 +32,7 @@ Each run also writes a `<name>-debug.html` next to the PNG so you can open the r
 ## How it works
 
 1. Reads `data.json` from the input directory.
-2. Picks `template/<type>-session.html` based on `data.type` (`community`, `networking`, or `showcase`).
+2. Picks `template/<type>-session.html` based on `data.type` (`community`, `networking`, `showcase`, or `sponsored`).
 3. Inlines all images as base64 (backgrounds, logos from `sources/`, and speaker photos from the input dir) and substitutes `{{PLACEHOLDERS}}` in the template.
 4. Renders the HTML with headless Chrome at 2160×1500 and crops to 2160×1080.
 
@@ -43,8 +44,9 @@ Each kind is driven by a `data.json` (selected by its `type` field) and its temp
 - **Networking Night** — `networking` → [`input/02-networking-night-sample/data.json`](input/02-networking-night-sample/data.json)
 - **Expert Panel** — `community` with speakers that omit the `talk` field → [`input/03-panel-may-2026/data.json`](input/03-panel-may-2026/data.json)
 - **Project Showcase** — `showcase` → [`input/06-project-showcase-OSC/data.json`](input/06-project-showcase-OSC/data.json)
+- **Sponsored Session** — `sponsored` → [`input/15-sponsored-session-ortus/data.json`](input/15-sponsored-session-ortus/data.json). One speaker (`speaker`, photo via `img`), the sponsor logo (`sponsor.logo`) in the input dir, and an optional `sticker` text (default `Pizza & Drinks included`).
 
-For `networking`, `venue` must be a key in the `VENUE_MAP` in `scripts/generate.js` (currently `marlife`, `innovation_campus`).
+For `networking` and `sponsored`, `venue` must be a key in the `VENUE_MAP` in `scripts/generate.js` (currently `marlife`, `innovation_campus`).
 
 ## Speaker photos
 

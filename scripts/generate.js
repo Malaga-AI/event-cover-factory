@@ -227,6 +227,7 @@ const VENUE_MAP = {
   },
   innovation_campus: {
     name: 'Innovation Campus',
+    address: 'C/ Álamos 7',
     logo: 'innovation_campus_logo.png',
     circular: false,
     white: true,
@@ -295,6 +296,44 @@ if (type === 'community') {
     .replace('{{VENUE}}', data.venue)
     .replace(/\{\{EXTRA_IMAGE\}\}/g, extraImage)
     .replace(/\{\{EXTRA_TEXT\}\}/g, extraText);
+} else if (type === 'sponsored') {
+  const venue = VENUE_MAP[data.venue];
+  if (!venue) throw new Error(`Unknown venue "${data.venue}". Known: ${Object.keys(VENUE_MAP).join(', ')}`);
+  const sponsor = data.sponsor || {};
+  const speaker = data.speaker;
+  const photoPath = resolvePhoto(speaker);
+  const photoTag = photoPath
+    ? `<img src="${toBase64(photoPath)}" alt="${speaker.name}" />`
+    : `<div style="width:460px;height:100%;background:#ddd;"></div>`;
+
+  // Title wraps to at most two lines in the ~1330px left column. AVG_CHAR
+  // approximates a Barlow-900 glyph width as a fraction of the font size.
+  const title = data.title || '';
+  const TITLE_MAX = 104;
+  const TITLE_MIN = 64;
+  const COL_WIDTH = 1330;
+  const LINES = 2;
+  const AVG_CHAR = 0.5;
+  const fit = Math.floor(COL_WIDTH * LINES / Math.max(1, title.length * AVG_CHAR));
+  const titleFontSize = Math.max(TITLE_MIN, Math.min(TITLE_MAX, fit));
+
+  html = html
+    .replace('{{MALAGA_LOGO}}', toBase64(path.join(ROOT, 'sources/logo_horizontal.png')))
+    .replace('{{SPONSOR_LOGO}}', toBase64(path.join(inputDir, sponsor.logo)))
+    .replace('{{SPONSOR_NAME}}', sponsor.name || '')
+    .replace('{{BAND_TEXT}}', data.band || 'Sponsored Session')
+    .replace('{{TITLE_FONT_SIZE}}', titleFontSize)
+    .replace('{{TITLE}}', title)
+    .replace('{{DESCRIPTION}}', data.description || '')
+    .replace('{{SPEAKER_PHOTO}}', photoTag)
+    .replace('{{SPEAKER_NAME}}', speaker.name)
+    .replace('{{SPEAKER_ROLE}}', speaker.role || '')
+    .replace('{{DATE}}', data.date)
+    .replace('{{HOUR}}', data.hour)
+    .replace('{{VENUE_LOGO}}', toBase64(path.join(ROOT, 'sources', venue.logo)))
+    .replace(/\{\{VENUE_NAME\}\}/g, venue.name)
+    .replace('{{VENUE_ADDRESS}}', venue.address || '')
+    .replace('{{STICKER_TEXT}}', data.sticker || 'Pizza & Drinks\nincluded');
 } else if (type === 'networking') {
   const venue = VENUE_MAP[data.venue];
   if (!venue) throw new Error(`Unknown venue "${data.venue}". Known: ${Object.keys(VENUE_MAP).join(', ')}`);
