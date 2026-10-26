@@ -44,7 +44,7 @@ Each kind is driven by a `data.json` (selected by its `type` field) and its temp
 - **Networking Night** — `networking` → [`input/02-networking-night-sample/data.json`](input/02-networking-night-sample/data.json)
 - **Expert Panel** — `community` with speakers that omit the `talk` field → [`input/03-panel-may-2026/data.json`](input/03-panel-may-2026/data.json)
 - **Project Showcase** — `showcase` → [`input/06-project-showcase-OSC/data.json`](input/06-project-showcase-OSC/data.json)
-- **Sponsored Session** — `sponsored` → [`input/15-sponsored-session-ortus/data.json`](input/15-sponsored-session-ortus/data.json). One speaker (`speaker`, photo via `img`), the sponsor logo (`sponsor.logo`) in the input dir, and an optional `sticker` text (default `Pizza & Drinks included`).
+- **Sponsored Session** — `sponsored` → [`input/15-sponsored-session-ortus/data.json`](input/15-sponsored-session-ortus/data.json). One speaker (`speaker`, photo via `img`), the sponsor logo (`sponsor.logo`) in the input dir, and an optional `sticker` text (default `Pizza & Drinks included`). Optional: `sponsor.secondaryLogo` (+ `sponsor.secondaryName` for alt text) shows a second logo next to the sponsor's, e.g. the product being launched; `url` shows a link under the description (rendered without `https://`).
 
 For `networking` and `sponsored`, `venue` must be a key in the `VENUE_MAP` in `scripts/generate.js` (currently `marlife`, `innovation_campus`).
 

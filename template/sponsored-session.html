@@ -72,6 +72,25 @@
               border-radius: 10px;
             }
 
+            /* Optional secondary logo (e.g. the product being launched) sits
+               next to the sponsor logo. With two logos the band text and logo
+               heights shrink so everything still fits on one row. */
+            .header .logo-divider {
+              width: 4px;
+              height: 84px;
+              background: #18DAE3;
+              flex-shrink: 0;
+            }
+            .header.has-secondary { gap: 36px; }
+            .header.has-secondary .band span {
+              font-size: 50px;
+              letter-spacing: 4px;
+            }
+            .header.has-secondary .sponsor-logo {
+              max-height: 78px;
+              max-width: 420px;
+            }
+
             /* ─── LAYER 3 – Talk title + description (left column) ─── */
             .talk {
               position: absolute;
@@ -102,6 +121,19 @@
               font-weight: 500;
               color: #C9D1E6;
               line-height: 1.32;
+            }
+
+            /* Optional link shown under the description */
+            .talk-url {
+              margin-top: 34px;
+              font-size: 46px;
+              font-weight: 800;
+              color: #18DAE3;
+              letter-spacing: 0.5px;
+            }
+            .talk-url::before {
+              content: '→ ';
+              color: #ffffff;
             }
 
             /* ─── LAYER 4 – Speaker photo + name (right column) ─── */
@@ -234,16 +266,18 @@
         <div class="glow"></div>
 
         <!-- LAYER 2 -->
-        <div class="header">
+        <div class="header {{HEADER_CLASS}}">
             <img class="malaga-logo" src="{{MALAGA_LOGO}}" alt="Malaga-AI" />
             <div class="band"><span>{{BAND_TEXT}}</span></div>
             <img class="sponsor-logo" src="{{SPONSOR_LOGO}}" alt="{{SPONSOR_NAME}}" />
+            {{SECONDARY_LOGO}}
         </div>
 
         <!-- LAYER 3 -->
         <div class="talk">
             <div class="talk-title">{{TITLE}}</div>
             <div class="talk-description">{{DESCRIPTION}}</div>
+            {{URL}}
         </div>
 
         <!-- LAYER 4 -->

@@ -7,8 +7,11 @@
   "venue": "innovation_campus",
   "sponsor": {
     "name": "Ortus Solutions",
-    "logo": "ortus.png"
+    "logo": "boxlang.svg",
+    "secondaryLogo": "bxagents.svg",
+    "secondaryName": "BX Agents"
   },
+  "url": "https://bxagents.ai",
   "speaker": {
     "name": "Luis Majano",
     "role": "Founder & CEO, Ortus Solutions",

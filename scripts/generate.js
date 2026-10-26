@@ -317,10 +317,22 @@ if (type === 'community') {
   const fit = Math.floor(COL_WIDTH * LINES / Math.max(1, title.length * AVG_CHAR));
   const titleFontSize = Math.max(TITLE_MIN, Math.min(TITLE_MAX, fit));
 
+  // Optional second logo next to the sponsor's (e.g. the product being
+  // launched) and optional link under the description.
+  const secondaryLogo = sponsor.secondaryLogo
+    ? `<div class="logo-divider"></div>\n            <img class="sponsor-logo" src="${toBase64(path.join(inputDir, sponsor.secondaryLogo))}" alt="${sponsor.secondaryName || ''}" />`
+    : '';
+  const urlTag = data.url
+    ? `<div class="talk-url">${data.url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</div>`
+    : '';
+
   html = html
+    .replace('{{HEADER_CLASS}}', sponsor.secondaryLogo ? 'has-secondary' : '')
     .replace('{{MALAGA_LOGO}}', toBase64(path.join(ROOT, 'sources/logo_horizontal.png')))
     .replace('{{SPONSOR_LOGO}}', toBase64(path.join(inputDir, sponsor.logo)))
-    .replace('{{SPONSOR_NAME}}', sponsor.name || '')
+    .replace('{{SECONDARY_LOGO}}', secondaryLogo)
+    .replace('{{URL}}', urlTag)
+    .replace(/\{\{SPONSOR_NAME\}\}/g, sponsor.name || '')
     .replace('{{BAND_TEXT}}', data.band || 'Sponsored Session')
     .replace('{{TITLE_FONT_SIZE}}', titleFontSize)
     .replace('{{TITLE}}', title)
