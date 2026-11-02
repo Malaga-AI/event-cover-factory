@@ -181,9 +181,41 @@
   .speakers-row-3 .speaker-role { font-size: 42px; }
   .speakers-row-3 .divider { height: 290px; }
 
+  /* ─── LAYER 6 – Full-width logo footer (when data.extra is set) ─── */
+  .logo-footer {
+    display: none;
+    position: absolute;
+    top: 930px;
+    left: 0;
+    width: 2160px;
+    height: 150px;
+    background: #f4f5f7;
+    border-top: 4px solid #18DAE3;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+  }
+  body.footer-logo .logo-footer { display: flex; }
+  .logo-footer img {
+    max-height: 100px;
+    max-width: 1700px;
+    width: auto;
+    height: auto;
+    display: block;
+  }
+
+  /* Compact speaker sizes when a footer logo is present */
+  body.footer-logo .speakers { height: 330px; }
+  body.footer-logo .speaker-card { gap: 40px; padding: 0 60px; }
+  body.footer-logo .speaker-photo { width: 280px; height: 280px; border-width: 6px; }
+  body.footer-logo .talk-title { font-size: 52px; }
+  body.footer-logo .speaker-name { font-size: 36px; }
+  body.footer-logo .speaker-role { font-size: 28px; }
+  body.footer-logo .divider { height: 280px; }
+
 </style>
 </head>
-<body>
+<body class="{{EXTRA_LAYOUT_CLASS}}">
 
   <!-- LAYER 1 -->
   <img class="bg-photo" src="{{BACKGROUND_IMAGE}}" alt="" />
@@ -211,6 +243,11 @@
   <!-- LAYER 4b -->
   <div class="sponsor-top">
     <img src="{{SPONSOR_LOGO}}" alt="Grupo Billingham" />
+  </div>
+
+  <!-- LAYER 6 -->
+  <div class="logo-footer">
+    <img src="{{EXTRA_IMAGE}}" alt="{{EXTRA_TEXT}}" />
   </div>
 
   <script>

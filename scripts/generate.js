@@ -244,17 +244,29 @@ if (type === 'community') {
   const title = data.title || 'Malaga-AI Community Session';
   const titleFontSize = computeTitleFontSize(title);
 
+  const extra = data.extra || {};
+  const extraImagePath = extra.img ? resolveExtraImage(extra.img) : null;
+  const extraImage = extraImagePath ? toBase64(extraImagePath) : '';
+  const extraText = extra.text || '';
+  const aspect = extraImagePath ? getImageAspectRatio(extraImagePath) : null;
+  const CARD_MAX_ASPECT = 4.1;
+  const useFooterLayout = aspect !== null && aspect > CARD_MAX_ASPECT;
+  const extraLayoutClass = useFooterLayout ? 'footer-logo' : '';
+
   html = html
     .replace('{{BACKGROUND_IMAGE}}', toBase64(path.join(ROOT, 'sources/background_community_session.png')))
     .replace('{{MALAGA_LOGO}}', toBase64(path.join(ROOT, 'sources/logo_horizontal.png')))
     .replace('{{SPONSOR_LOGO}}', toBase64(path.join(ROOT, 'sources/grupo_billingham_sponsor.png')))
+    .replace('{{EXTRA_LAYOUT_CLASS}}', extraLayoutClass)
     .replace('{{TITLE}}', title)
     .replace('{{TITLE_FONT_SIZE}}', titleFontSize)
     .replace('{{DATE}}', data.date)
     .replace('{{HOUR}}', data.hour)
     .replace('{{VENUE}}', data.venue)
     .replace('{{SPEAKER_COUNT}}', data.speakers.length)
-    .replace('{{SPEAKER_CARDS}}', speakerCards);
+    .replace('{{SPEAKER_CARDS}}', speakerCards)
+    .replace(/\{\{EXTRA_IMAGE\}\}/g, extraImage)
+    .replace(/\{\{EXTRA_TEXT\}\}/g, extraText);
 } else if (type === 'showcase') {
   const extra = data.extra || {};
   const extraImagePath = extra.img ? resolveExtraImage(extra.img) : null;

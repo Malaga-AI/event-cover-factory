@@ -1,0 +1,25 @@
+{
+  "type": "community",
+  "title": "Malaga-AI Community Session",
+  "date": "17 November 2026",
+  "hour": "18:30",
+  "venue": "42 Málaga",
+  "speakers": [
+    {
+      "name": "Halyna Parashchuk",
+      "role": "Senior Product Owner & Business Analyst",
+      "talk": "Step by Step Into Tech: How My Past Experience Helped Me Change Careers",
+      "img": "foto_Halyna.JPG"
+    },
+    {
+      "name": "Alberto Zaragoza",
+      "role": "Junior Software Developer & Data Engineer",
+      "talk": "De la venta al dato",
+      "img": "foto_Alberto.jpg"
+    }
+  ],
+  "extra": {
+    "img": "42-SVG/42Malaga-POSITIVO-H-01.svg",
+    "text": "Malaga-AI @ 42 Málaga"
+  }
+}
