@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<!--
+  Square (1:1) Community Session cover for Nomadia.
+  Nomadia shows the cover as a ~340px square (object-fit: cover) and stores it
+  at 2048x2048. Its share card (og:image, 1200x630) crops the square to the
+  middle ~70% of its width, so title, date and talk text stay within
+  x = 307..1741.
+-->
+<meta name="poster-size" content="2048x2048" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600;1,700;1,800&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 2048px;
+    height: 2048px;
+    overflow: hidden;
+    position: relative;
+    background: #ffffff;
+    font-family: 'Barlow', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+  }
+
+  /* ─── Background photo (top) ─── */
+  .bg-photo {
+    position: absolute;
+    top: 0; left: 0;
+    width: 2048px;
+    height: 1000px;
+    object-fit: cover;
+    object-position: center 30%;
+    filter: grayscale(100%) brightness(0.55);
+    z-index: 1;
+  }
+
+  /* ─── Logos ─── */
+  .malaga-logo {
+    position: absolute;
+    top: 64px; left: 64px;
+    height: 170px;
+    width: auto;
+    z-index: 4;
+  }
+  .sponsor-top {
+    position: absolute;
+    top: 86px; right: 64px;
+    z-index: 4;
+  }
+  .sponsor-top img { height: 126px; width: auto; opacity: 0.95; display: block; }
+
+  /* ─── Cyan title banner: two lines, large ─── */
+  .title-banner {
+    position: absolute;
+    top: 330px; left: 0;
+    width: 2048px;
+    height: 440px;
+    background: #18DAE3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 320px;
+    z-index: 3;
+  }
+  .title-banner h1 {
+    color: #090E2A;
+    font-size: 180px;
+    font-weight: 900;
+    letter-spacing: -3px;
+    line-height: 0.98;
+    text-align: center;
+  }
+
+  /* ─── Navy date banner ─── */
+  .date-banner {
+    position: absolute;
+    top: 770px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1700px;
+    height: 200px;
+    background: #090E2A;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+  }
+  .date-banner p {
+    color: #18DAE3;
+    font-size: 84px;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 1px;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  /* ─── Speakers: stacked rows ─── */
+  .speakers {
+    position: absolute;
+    top: 1000px; left: 0;
+    width: 2048px;
+    height: 840px;
+    padding: 36px 0;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+  body.no-footer .speakers { height: 1048px; }
+
+  .speakers-row {
+    width: 1560px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
+  .speaker-card {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+  }
+  .speaker-photo {
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    border: 10px solid #18DAE3;
+    background: #f5f5f5;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .speaker-photo img { width: 100%; height: 100%; object-fit: contain; }
+
+  .speaker-info { flex: 1; }
+  .talk-title {
+    font-size: 80px;
+    font-weight: 800;
+    color: #090E2A;
+    line-height: 1.08;
+    margin-bottom: 22px;
+  }
+  .speaker-name { font-size: 56px; color: #090E2A; font-weight: 600; margin-bottom: 4px; }
+  .speaker-role { font-size: 44px; color: #777; font-weight: 400; }
+
+  .divider { width: 100%; height: 2px; background: #e2e2e2; flex-shrink: 0; }
+
+  /* 3-up panels: smaller photos so all rows fit */
+  .speakers-row-3 .speaker-photo { width: 220px; height: 220px; border-width: 8px; }
+  .speakers-row-3 .talk-title { font-size: 64px; }
+  .speakers-row-3 .speaker-name { font-size: 64px; }
+  .speakers-row-3 .speaker-role { font-size: 46px; }
+
+  /* 1 speaker: bigger photo */
+  .speakers-row-1 .speaker-photo { width: 440px; height: 440px; }
+
+  /* ─── Partner logo footer ─── */
+  .logo-footer {
+    position: absolute;
+    top: 1840px; left: 0;
+    width: 2048px;
+    height: 208px;
+    background: #f4f5f7;
+    border-top: 6px solid #18DAE3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+  }
+  body.no-footer .logo-footer { display: none; }
+  .logo-footer img { max-height: 140px; max-width: 1800px; width: auto; height: auto; display: block; }
+</style>
+</head>
+<body class="{{EXTRA_LAYOUT_CLASS}}">
+
+  <img class="bg-photo" src="{{BACKGROUND_IMAGE}}" alt="" />
+  <img class="malaga-logo" src="{{MALAGA_LOGO}}" alt="Malaga-AI" />
+  {{SPONSOR_BLOCK}}
+
+  <div class="title-banner"><h1>{{TITLE}}</h1></div>
+
+  <div class="date-banner">
+    <p>{{DATE}} | {{HOUR}}h | {{VENUE}}</p>
+  </div>
+
+  <div class="speakers">
+    <div class="speakers-row speakers-row-{{SPEAKER_COUNT}}">
+      {{SPEAKER_CARDS}}
+    </div>
+  </div>
+
+  <div class="logo-footer"><img src="{{EXTRA_IMAGE}}" alt="{{EXTRA_TEXT}}" /></div>
+
+  <script>
+    // No partner logo: drop the footer and give the speakers the space.
+    if (!document.querySelector('.logo-footer img').getAttribute('src')) {
+      document.body.classList.add('no-footer');
+    }
+
+    // Shrink el's font until it fits maxLines and its box width.
+    // maxWidth(e) is the widest e may be; by default its own box (+8px for
+    // italic overhang), so only unbreakable words count as overflow.
+    function shrink(els, maxLines, minSize, maxWidth = e => e.clientWidth + 8) {
+      if (!els.length) return;
+      els.forEach(e => e.style.fontSize = '');
+      let size = parseFloat(getComputedStyle(els[0]).fontSize);
+      const fits = () => els.every(e => {
+        const lh = parseFloat(getComputedStyle(e).lineHeight);
+        return Math.round(e.scrollHeight / lh) <= maxLines && e.scrollWidth <= maxWidth(e);
+      });
+      for (;;) {
+        els.forEach(e => e.style.fontSize = size + 'px');
+        if (fits() || size <= minSize) break;
+        size -= 2;
+      }
+    }
+
+    // The speaker rows must fit their band; shrink talk titles until they do.
+    function fitSpeakers() {
+      const n = document.querySelectorAll('.speaker-card').length;
+      const titles = Array.from(document.querySelectorAll('.talk-title'));
+      shrink(titles, n >= 3 ? 2 : 3, 44);
+      const band = document.querySelector('.speakers-row');
+      let size = titles.length ? parseFloat(titles[0].style.fontSize) : 0;
+      while (titles.length && band.scrollHeight > band.clientHeight + 1 && size > 44) {
+        size -= 2;
+        titles.forEach(t => t.style.fontSize = size + 'px');
+      }
+    }
+
+    function fitAll() {
+      shrink([document.querySelector('.title-banner h1')], 2, 110);
+      // The date never wraps and must stay inside the share-card crop
+      // (middle 1434px of the square).
+      shrink([document.querySelector('.date-banner p')], 1, 56, () => 1420);
+      fitSpeakers();
+    }
+    fitAll();
+    document.fonts.ready.then(fitAll);
+  </script>
+
+</body>
+</html>

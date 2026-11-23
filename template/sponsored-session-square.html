@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<!--
+  Square (1:1) Sponsored Session cover for Nomadia.
+  Nomadia shows the cover as a ~340px square and stores it at 2048x2048; its
+  share card crops the middle ~70% of the width (x = 307..1741), so title,
+  speaker, sticker and date stay inside that band. The description paragraph
+  of the 2:1 flyer is left out: at 340px it would be ~6px tall.
+-->
+<meta name="poster-size" content="2048x2048" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 2048px;
+    height: 2048px;
+    overflow: hidden;
+    position: relative;
+    background: #090E2A;
+    font-family: 'Barlow', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+  }
+
+  .glow {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 1024px 1200px, rgba(24, 218, 227, 0.26) 0, rgba(24, 218, 227, 0) 640px),
+      radial-gradient(circle at 160px 1900px, rgba(24, 218, 227, 0.10) 0, rgba(24, 218, 227, 0) 600px);
+    z-index: 1;
+  }
+
+  /* ─── Top row: Malaga-AI logo | sponsor logo(s) ─── */
+  .top {
+    position: absolute;
+    top: 60px; left: 64px; right: 64px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 4;
+  }
+  .top .malaga-logo { height: 150px; width: auto; display: block; }
+  .sponsors { display: flex; align-items: center; gap: 40px; }
+  /* Fixed height (not max-height) so SVG logos without width/height keep
+     their aspect ratio; object-fit handles very wide wordmarks. */
+  .sponsors .sponsor-logo {
+    height: 110px; width: auto; max-width: 620px;
+    object-fit: contain; display: block; border-radius: 10px;
+  }
+  .sponsors .logo-divider { width: 5px; height: 96px; background: #18DAE3; flex-shrink: 0; }
+  .top.has-secondary .sponsor-logo { height: 84px; max-width: 520px; }
+
+  /* ─── Cyan band ─── */
+  .band {
+    position: absolute;
+    top: 260px; left: 0;
+    width: 2048px;
+    height: 130px;
+    background: #18DAE3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+  }
+  .band span {
+    color: #090E2A;
+    font-size: 84px;
+    font-weight: 900;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* ─── Main column between the band and the bottom band ─── */
+  .main {
+    position: absolute;
+    top: 390px; left: 0;
+    width: 2048px;
+    height: 1420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    z-index: 3;
+  }
+
+  .talk-title {
+    width: 1420px;  /* inside the share-card crop */
+    font-size: 150px;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1.02;
+    letter-spacing: -3px;
+    text-align: center;
+  }
+  .talk-title::after {
+    content: '';
+    display: block;
+    width: 220px; height: 12px;
+    margin: 36px auto 0;
+    background: #18DAE3;
+  }
+
+  .speaker { position: relative; width: 900px; text-align: center; }
+  .speaker .ring {
+    position: absolute;
+    top: 50px; left: 50%;
+    transform: translateX(-50%);
+    width: 580px; height: 580px;
+    border-radius: 50%;
+    border: 12px solid #18DAE3;
+    background: rgba(24, 218, 227, 0.10);
+  }
+  .speaker .photo {
+    position: relative;
+    height: 640px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .speaker .photo img { height: 640px; width: auto; display: block; }
+  .speaker-name {
+    margin-top: 18px;
+    font-size: 92px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.05;
+    letter-spacing: -0.5px;
+  }
+  .speaker-role {
+    margin-top: 8px;
+    font-size: 54px;
+    font-weight: 500;
+    color: #18DAE3;
+    line-height: 1.15;
+  }
+
+  /* Slanted sticker over the lower-left of the speaker ring */
+  .sticker {
+    position: absolute;
+    top: 400px; left: -110px;
+    transform: rotate(-7deg);
+    background: #ffffff;
+    border: 9px solid #18DAE3;
+    border-radius: 34px;
+    padding: 24px 40px 26px;
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+    z-index: 5;
+  }
+  .sticker .sticker-text {
+    font-size: 60px;
+    font-weight: 900;
+    color: #090E2A;
+    line-height: 1.02;
+    letter-spacing: -0.5px;
+    white-space: pre-line;
+  }
+
+  .talk-url {
+    font-size: 72px;
+    font-weight: 800;
+    color: #18DAE3;
+    letter-spacing: 0.5px;
+  }
+  .talk-url::before { content: '→ '; color: #ffffff; }
+
+  /* ─── Bottom band: venue logo | date & time / venue ─── */
+  .bottom-band {
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 2048px;
+    height: 238px;
+    background: #18DAE3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 44px;
+    z-index: 4;
+  }
+  .bottom-band .venue-logo {
+    max-height: 170px; max-width: 240px;
+    width: auto; height: auto; display: block;
+    filter: brightness(0);
+  }
+  .bottom-band .divider { width: 6px; height: 150px; background: #090E2A; flex-shrink: 0; }
+  .bottom-band .when-where {
+    color: #090E2A;
+    font-style: italic;
+    white-space: nowrap;
+    line-height: 1.12;
+  }
+  .bottom-band .when { font-size: 72px; font-weight: 800; letter-spacing: 0.5px; }
+  .bottom-band .where { font-size: 54px; font-weight: 700; }
+</style>
+</head>
+<body>
+  <div class="glow"></div>
+
+  <div class="top {{HEADER_CLASS}}">
+    <img class="malaga-logo" src="{{MALAGA_LOGO}}" alt="Malaga-AI" />
+    <div class="sponsors">
+      <img class="sponsor-logo" src="{{SPONSOR_LOGO}}" alt="{{SPONSOR_NAME}}" />
+      {{SECONDARY_LOGO}}
+    </div>
+  </div>
+
+  <div class="band"><span>{{BAND_TEXT}}</span></div>
+
+  <div class="main">
+    <div class="talk-title">{{TITLE}}</div>
+
+    <div class="speaker">
+      <div class="ring"></div>
+      <div class="photo">{{SPEAKER_PHOTO}}</div>
+      <div class="speaker-name">{{SPEAKER_NAME}}</div>
+      <div class="speaker-role">{{SPEAKER_ROLE}}</div>
+      <div class="sticker"><div class="sticker-text">{{STICKER_TEXT}}</div></div>
+    </div>
+
+    {{URL}}
+  </div>
+
+  <div class="bottom-band">
+    <img class="venue-logo" src="{{VENUE_LOGO}}" alt="{{VENUE_NAME}}" />
+    <div class="divider"></div>
+    <div class="when-where">
+      <div class="when">{{DATE}} | {{HOUR}}</div>
+      <div class="where">{{VENUE_NAME}} · {{VENUE_ADDRESS}}</div>
+    </div>
+  </div>
+
+  <script>
+    // Shrink each element's font until fits() holds (or minSize is reached).
+    function shrink(el, minSize, fits) {
+      if (!el) return;
+      el.style.fontSize = '';
+      let size = parseFloat(getComputedStyle(el).fontSize);
+      while (!fits(el) && size > minSize) {
+        size -= 2;
+        el.style.fontSize = size + 'px';
+      }
+    }
+    const lines = el => Math.round(el.scrollHeight / parseFloat(getComputedStyle(el).lineHeight));
+
+    function fitAll() {
+      // Title: at most 3 lines.
+      shrink(document.querySelector('.talk-title'), 90, el => lines(el) <= 3);
+      // Date block (logo + divider + text) must fit the share-card crop (1434px).
+      const band = document.querySelector('.bottom-band');
+      const bandWidth = () => Array.from(band.children).reduce((w, c) => w + c.getBoundingClientRect().width, 0) + 44 * 2;
+      const when = document.querySelector('.when'), where = document.querySelector('.where');
+      when.style.fontSize = where.style.fontSize = '';
+      let scale = 1;
+      while (bandWidth() > 1420 && scale > 0.6) {
+        scale -= 0.02;
+        when.style.fontSize = 72 * scale + 'px';
+        where.style.fontSize = 54 * scale + 'px';
+      }
+      // Main column must leave breathing room above the bottom band. Sum the
+      // children: with space-evenly, overflow also spills off the top, which
+      // scrollHeight doesn't count.
+      const main = document.querySelector('.main');
+      const title = document.querySelector('.talk-title');
+      const used = () => Array.from(main.children).reduce((h, c) => h + c.getBoundingClientRect().height, 0);
+      let size = parseFloat(getComputedStyle(title).fontSize);
+      while (used() > main.clientHeight - 160 && size > 90) {
+        size -= 2;
+        title.style.fontSize = size + 'px';
+      }
+    }
+    fitAll();
+    document.fonts.ready.then(fitAll);
+  </script>
+</body>
+</html>

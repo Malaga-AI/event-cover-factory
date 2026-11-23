@@ -46,6 +46,20 @@ Each kind is driven by a `data.json` (selected by its `type` field) and its temp
 - **Project Showcase** — `showcase` → [`input/06-project-showcase-OSC/data.json`](input/06-project-showcase-OSC/data.json)
 - **Sponsored Session** — `sponsored` → [`input/15-sponsored-session-ortus/data.json`](input/15-sponsored-session-ortus/data.json). One speaker (`speaker`, photo via `img`), the sponsor logo (`sponsor.logo`) in the input dir, and an optional `sticker` text (default `Pizza & Drinks included`). Optional: `sponsor.secondaryLogo` (+ `sponsor.secondaryName` for alt text) shows a second logo next to the sponsor's, e.g. the product being launched; `url` shows a link under the description (rendered without `https://`).
 
+## Square covers (Nomadia)
+
+Nomadia shows an event's cover as a square (about 340×340 px on the event page, stored at 2048×2048). Its share card (`og:image`, 1200×630) crops the square to its middle ~70% width. A 2:1 flyer becomes a thin strip with unreadable text there, so use a square template:
+
+```bash
+node scripts/generate.js input/16-community-session-november2026 community-session-square
+```
+
+- `community-session-square` uses the same `data.json` as `community` (talks, panels, `extra` footer logo).
+- `sponsored-session-square` uses the same `data.json` as `sponsored`. It leaves out `description`, which would be unreadable at Nomadia's size: `node scripts/generate.js input/15-sponsored-session-ortus sponsored-session-square`.
+- Writes `output/<input-dir-name>-square.png` at 2048×2048.
+- The title, date and talk text stay inside the middle 1434 px, so the share card doesn't cut them.
+- A template sets its canvas size with `<meta name="poster-size" content="WxH">`. Without it, the size is 2160×1080.
+
 For `networking` and `sponsored`, `venue` must be a key in the `VENUE_MAP` in `scripts/generate.js` (currently `marlife`, `innovation_campus`).
 
 ## Speaker photos

@@ -20,6 +20,7 @@ function renderToPng(chromePath, htmlFile, pngFile, userDataDir, w, h) {
       `--screenshot=${pngFile}`,
       `--window-size=${w},${h}`,
       '--hide-scrollbars',
+      '--virtual-time-budget=10000', // wait for Google Fonts (Barlow) before the screenshot
       '--disable-gpu',
       '--no-sandbox',
       '--force-device-scale-factor=1',
@@ -132,7 +133,13 @@ const data = JSON.parse(fs.readFileSync(path.join(inputDir, 'data.json'), 'utf8'
 
 const templateName = process.argv[3] || `${data.type || 'community'}-session`;
 const templatePath = path.join(ROOT, 'template', `${templateName}.html`);
-const outputPath = process.argv[4] || path.join(ROOT, 'output', `${path.basename(inputDir)}.png`);
+// A template can set its own canvas with <meta name="poster-size" content="WxH">
+// (e.g. the square Nomadia covers); otherwise covers are 2160x1080.
+const sizeMeta = fs.readFileSync(templatePath, 'utf8').match(/<meta name="poster-size" content="(\d+)x(\d+)"/);
+const POSTER_W = sizeMeta ? Number(sizeMeta[1]) : 2160;
+const POSTER_H = sizeMeta ? Number(sizeMeta[2]) : 1080;
+const variant = POSTER_W === POSTER_H ? '-square' : '';
+const outputPath = process.argv[4] || path.join(ROOT, 'output', `${path.basename(inputDir)}${variant}.png`);
 
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
@@ -234,6 +241,25 @@ const VENUE_MAP = {
   },
 };
 
+// Grupo Billingham sponsored us until the end of 2026. Covers for events on or
+// after 1 January 2027 leave its logo out; older covers keep it, so they still
+// regenerate unchanged.
+const BILLINGHAM_LAST_DAY = new Date(Date.UTC(2026, 11, 31));
+function eventDate(d) {
+  // "14 January 2027", "Thursday, 26 November 2026", or networking "month": "January 2027"
+  const text = (d.date || d.month || '').replace(/^[A-Za-z]+,\s*/, '');
+  const m = text.match(/(?:(\d{1,2})\s+)?([A-Za-z]+)\s+(\d{4})/);
+  if (!m) throw new Error(`Cannot read the event date from "${text}"`);
+  const month = new Date(`${m[2]} 1, 2000`).getMonth();
+  if (Number.isNaN(month)) throw new Error(`Unknown month "${m[2]}" in "${text}"`);
+  return new Date(Date.UTC(Number(m[3]), month, Number(m[1] || 1)));
+}
+function sponsorBlock(cssClass) {
+  if (eventDate(data) > BILLINGHAM_LAST_DAY) return '';
+  const logo = toBase64(path.join(ROOT, 'sources/grupo_billingham_sponsor.png'));
+  return `<div class="${cssClass}"><img src="${logo}" alt="Grupo Billingham" /></div>`;
+}
+
 let html = fs.readFileSync(templatePath, 'utf8');
 const type = data.type || 'community';
 
@@ -256,7 +282,7 @@ if (type === 'community') {
   html = html
     .replace('{{BACKGROUND_IMAGE}}', toBase64(path.join(ROOT, 'sources/background_community_session.png')))
     .replace('{{MALAGA_LOGO}}', toBase64(path.join(ROOT, 'sources/logo_horizontal.png')))
-    .replace('{{SPONSOR_LOGO}}', toBase64(path.join(ROOT, 'sources/grupo_billingham_sponsor.png')))
+    .replace('{{SPONSOR_BLOCK}}', sponsorBlock('sponsor-top'))
     .replace('{{EXTRA_LAYOUT_CLASS}}', extraLayoutClass)
     .replace('{{TITLE}}', title)
     .replace('{{TITLE_FONT_SIZE}}', titleFontSize)
@@ -298,7 +324,7 @@ if (type === 'community') {
   html = html
     .replace('{{BACKGROUND_IMAGE}}', toBase64(path.join(ROOT, 'sources/project_background.jpg')))
     .replace('{{MALAGA_LOGO}}', toBase64(path.join(ROOT, 'sources/logo_horizontal.png')))
-    .replace('{{SPONSOR_LOGO}}', toBase64(path.join(ROOT, 'sources/grupo_billingham_sponsor.png')))
+    .replace('{{SPONSOR_BLOCK}}', sponsorBlock('sponsor-top'))
     .replace('{{EXTRA_LAYOUT_CLASS}}', extraLayoutClass)
     .replace('{{TITLE_FONT_SIZE}}', titleFontSize)
     .replace('{{TITLE}}', title)
@@ -379,7 +405,7 @@ if (type === 'community') {
   html = html
     .replace('{{SIDE_PHOTO}}', toBase64(path.join(ROOT, 'sources/side_panel_networking_session.png')))
     .replace('{{MALAGA_LOGO_VERTICAL}}', toBase64(path.join(ROOT, 'sources/logo_vertical.png')))
-    .replace('{{SPONSOR_LOGO}}', toBase64(path.join(ROOT, 'sources/grupo_billingham_sponsor.png')))
+    .replace('{{SPONSOR_BLOCK}}', sponsorBlock('sponsor'))
     .replace('{{VENUE_LOGO}}', toBase64(path.join(ROOT, 'sources', venue.logo)))
     .replace('{{VENUE_LOGO_CLASS}}', [venue.circular && 'circular', venue.white && 'white-logo'].filter(Boolean).join(' '))
     .replace('{{VENUE_NAME}}', venue.name)
@@ -404,10 +430,8 @@ fs.writeFileSync(debugHtml, html, 'utf8');
 console.log(`Debug HTML saved: ${debugHtml}`);
 
 // Chrome's headless viewport is smaller than --window-size, so render into a
-// generously-tall window then crop the PNG to POSTER_H.
-const POSTER_W = 2160;
-const POSTER_H = 1080;
-const RENDER_H = 1500;        // window-size height (must be > POSTER_H)
+// generously-tall window then crop the PNG to POSTER_H (size set above).
+const RENDER_H = POSTER_H + 420;  // window-size height (must be > POSTER_H)
 const tmpPng = path.join(tmpDir, 'raw.png');
 
 console.log(`Rendering ${templateName} → ${outputPath}`);
